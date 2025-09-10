@@ -1,0 +1,22 @@
+#
+# You may or may not want to use kernel modules. If so, you may or may not use kmod or busybox
+# However, if you use busybox, and don't build it yourself,to it is very possible that you will not have modprobe in it, so take heed
+#
+: ${config_examples__common_linux_add_rootfs_examples="true"}			# do things before packing the kernel modules and before packing the rootfs
+: ${config_examples__common_linux_add_ramdisk_examples="false"}			# could do them before packing the ramdisk, not doing any at the moment
+: ${config_examples__common_linux_add_kernel_examples="false"}			# if added, it would be in tree only
+
+: ${config_examples__common_linux_add_hello_module="true"}
+: ${config_examples__common_build_modules_against="build"}	# Can be: <build|modules_prepare>. use build for building against the kernel build, or modules_prepare to illustrate a module prepare
+
+export config_examples__common_linux_add_rootfs_examples config_examples__common_linux_add_ramdisk_examples config_examples__common_linux_add_kernel_examples
+export config_examples__common_build_modules_against
+
+export config_examples__common_linux_add_hello_module
+
+
+
+if [ "$config_examples__common_linux_add_hello_module" = "true" ] ; then
+	config_kernel__specific_modules_initramfs_files_list_nosuffix+=" updates/hello"
+	config_kernel__specific_modules_rootfs_files_list_nosuffix+=" updates/hello"
+fi

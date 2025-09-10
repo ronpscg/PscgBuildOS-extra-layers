@@ -1,0 +1,28 @@
+# cat /etc/systemd/system/weston.service
+#
+# The objective of this service is to provide a very simple way to demonstrate weston starting
+# You would usually use a configuration file and or more configuration options. For a demonstration
+# and for further building on it, you can happily use this
+#
+# This is a trivial overriding showing the openning of a kiosk device.
+# Just in case, it also calls dhclient (in the background). This of course should be handled by
+# other services.
+#
+# Note: tty is omitted, to support sid (Debian 13 at the time of writing) with loongarch64 where weston does not like the --tty argument
+#
+[Unit]
+Description=Weston/Firefox Kiosk Browser trivial starter
+
+[Service]
+Environment="XDG_RUNTIME_DIR=/tmp/xdg-runtime-dir"
+Environment="DEFAULT_WESTON_TTY=7"
+Environment="DEFAULT_WESTON_RESTART_TIMEOUT=5"
+Environment="HACKY_NETWORK_COMMAND=dhclient"
+ExecStartPre=/bin/sh -c "[ -d $XDG_RUNTIME_DIR ] || mkdir -p $XDG_RUNTIME_DIR ; $HACKY_NETWORK_COMMAND &"
+ExecStart=weston -- firefox --kiosk "www.thepscg.com"
+SyslogIdentifier=weston
+Restart=always
+RestartSec=$DEFAULT_WESTON_RESTART_TIMEOUT
+
+[Install]
+WantedBy=graphical.target

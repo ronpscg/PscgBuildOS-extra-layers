@@ -1,0 +1,54 @@
+#
+# Build config for Realtek 8821CU WiFi and Bluetooth USB dongle
+#
+
+#
+# RTW88_8821CU WiFi as a rootfs module
+#
+export config_kernel__specific_modules_rootfs_files_list_nosuffix+="
+        kernel/drivers/net/wireless/realtek/rtw88/rtw88_core
+        kernel/drivers/net/wireless/realtek/rtw88/rtw88_usb
+        kernel/drivers/net/wireless/realtek/rtw88/rtw88_8821c 
+        kernel/drivers/net/wireless/realtek/rtw88/rtw88_8821cu
+"
+
+# Commented out deliberately: export config_kernel__copy_all_built_modules_to_rootfs=false  # We don't care about it for initramfs. We never copy all the modules to initramfs, no matter what
+export config_firmware__linux_firmware_rootfs_files_list+="
+        rtw88/rtw8821c_fw.bin 
+"
+export config_kernel__list_of_config_overrides+=" RTW88_8821CU=m  RTW88=y"
+
+
+#
+# RTW88_8821CU bluetooth as rootfs parts
+#
+
+export config_kernel__list_of_config_overrides+=" BT=y BT_HCIBTUSB_RTL=y BT_HCIBTUSB=m BT_RTL=m"
+export config_kernel__specific_modules_rootfs_files_list_nosuffix+="
+        kernel/drivers/bluetooth/btintel
+        kernel/drivers/bluetooth/btbcm 
+        kernel/drivers/bluetooth/btrtl 
+        kernel/drivers/bluetooth/btusb"
+export config_firmware__linux_firmware_rootfs_files_list+="
+        rtl_bt/rtl8821c_fw.bin 
+        rtl_bt/rtl8821c_config.bin
+"
+
+if [ "$DEMONSTRATE_MODULE_IN_INITRAMFS" = "true" ] ; then
+#
+# RTW88_8821CU WiFi as an initramfs module
+#
+export config_kernel__specific_modules_initramfs_files_list_nosuffix+="
+        kernel/drivers/net/wireless/realtek/rtw88/rtw88_core
+        kernel/drivers/net/wireless/realtek/rtw88/rtw88_usb
+        kernel/drivers/net/wireless/realtek/rtw88/rtw88_8821c 
+        kernel/drivers/net/wireless/realtek/rtw88/rtw88_8821cu
+"
+
+# Commented out deliberately: export config_kernel__copy_all_built_modules_to_rootfs=false  # We don't care about it for initramfs. We never copy all the modules to initramfs, no matter what
+export config_firmware__linux_firmware_initramfs_files_list+="
+        rtw88/rtw8821c_fw.bin 
+"
+export config_kernel__list_of_config_overrides+=" RTW88_8821CU=m  RTW88=y"
+fi
+
