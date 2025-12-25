@@ -17,6 +17,10 @@ export config_firmware__linux_firmware_rootfs_files_list+="
         rtw88/rtw8821c_fw.bin 
 "
 export config_kernel__list_of_config_overrides+=" RTW88_8821CU=m  RTW88=y"
+# Without it you cannot select RTW88 - and it's hard to figure out that an architecture does not enable it by default. They can be modules, and copied as well
+# We opt for the builtin inclusion, simply because it's less things to write, and in this example we want to be very specific.
+# It is quite likely you will never have to add this, but in linux-6.19-rc2 the RTW88 config was not selected because the following two configs were not enabled
+export config_kernel__list_of_config_overrides+=" MAC80211=y CFG80211=y" 
 
 
 #
