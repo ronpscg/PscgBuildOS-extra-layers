@@ -1,0 +1,21 @@
+
+# firefox-esr can also run as root. chromium is a nice option that is not entirely compatible with google-chrome, so for this,
+# I choose firefox, and let the user install google-chrome or whatever explicitly if they would like to do so
+# It is not available in Ubuntu main/universe though
+if [ "${config_pscgdebos__debian_or_ubuntu}" = "debian" ] ; then
+	if [ "$ARCH" = "loongarch" ] ; then
+		warn "Debian sid does not have firefox-esr for loongarch64. I think it did at some time. If this is persistent, the check and warnings
+should be elsewhere, and the if else should be removed (just set the default value instead)"
+		: ${pscg_debos_graphics_browser_packages="firefox"}
+	else
+		: ${pscg_debos_graphics_browser_packages="firefox-esr"}
+	fi
+else
+	# Note: And I don't feel like working hard, or easy, given some attitude in Canonical (not everyone, but some important people)
+	warn "Ubuntu relies heavily on snap packages, and all browsers require that. Not handling it as setting up snap packages is different from the debootstrap flow"
+	# Ubuntu does not have firefox-esr, so we use firefox or chromium
+	# Did not really test it though, and either way these default pacakges should be defined elsewhere
+	#: ${pscg_debos_graphics_browser_packages="firefox"}
+fi
+
+pscg_debos__add_to_package_list $pscg_debos_graphics_browser_packages
