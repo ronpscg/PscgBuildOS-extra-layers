@@ -4,9 +4,14 @@ A place to add more layers and examples to PscgBuildOS.
 
 ## Including layers in a build
 
-You can use one of the following options:
+You can use one of the following options for layers that can be used by all distros:
 * set `config_distro__extra_layers` to the full path of the layer directory you would like to include. Separate each layer path with *space(s)*
 * set `config_distro__extra_layers_file` to the full path of a file, containing each layer path on a *line*
+
+For specific distros, you can use a specific `config_<distro_name>__extra_layers_file`, for example:
+* `config_pscgdebos__extra_layers_file=$PWD/more-layers/more-pscg_debos-layers.txt <your-wrapper-buildscript.sh>`
+
+It is *recommended* to use the `..._layers_file` construct. In particular, in *PscgDebOS*, to have newly added pacakges available in cache, it is expected.
 
 You can of course also change the code in PscgBuildOS to include a layer, but it is not recommended. This has been separated out for a reason.
 
