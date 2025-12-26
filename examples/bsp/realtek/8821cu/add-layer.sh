@@ -16,6 +16,12 @@ add_rootfs_packages_pscg_alpineos() {
 	sudo chroot $ROOTFS_DIR apk add iw wpa_supplicant bluez bluez-deprecated openrc-init	
 }
 
+# should put it as the regular mechanism with the Debian configs etc. it is done like this now simply because it has not been tested in Debian at all. TODO - port to Debian
+add_rootfs_packages_pscg_debos() {
+	echo $ROOTFS_DIR
+	sudo chroot $ROOTFS_DIR apt-get install -y --no-install-recommends iw wpasupplicant bluez
+}
+
 main() {
 	# It is just an example. Ideally each distro will take care of features...
 	verbose_do_or_die "add_rootfs_packages_${config_distro}"
